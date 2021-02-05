@@ -1,13 +1,12 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
 import * as cookieParser from 'cookie-parser';
 import { AllExceptionsFilter } from './common/filter/all-exceptions.filter';
 import { ErrorsInterceptor } from './common/interceptor/errors.interceptor';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { RequestValidationError } from './common/exceptions/request-validation.error';
+import { TestingModule } from '@nestjs/testing';
 
-async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+export const testApp = (moduleRef: TestingModule): INestApplication => {
+	const app = moduleRef.createNestApplication();
 	app.use(cookieParser());
 	app.useGlobalFilters(new AllExceptionsFilter());
 	app.useGlobalInterceptors(new ErrorsInterceptor());
@@ -18,12 +17,5 @@ async function bootstrap() {
 			},
 		})
 	);
-	const globalPrefix = 'api';
-	app.setGlobalPrefix(globalPrefix);
-	const port = process.env.PORT || 3333;
-	await app.listen(port, () => {
-		Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
-	});
-}
-
-bootstrap();
+	return app;
+};
