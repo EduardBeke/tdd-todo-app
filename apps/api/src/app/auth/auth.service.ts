@@ -13,7 +13,7 @@ export class AuthService {
 		private readonly jwtService: JwtService
 	) {}
 
-	signIn(username: string, password: string): UserDto | null {
+	signIn(username: string, password: string): UserDto {
 		const user = this.usersService.findOne(username);
 		if (user?.password === password) {
 			return { username, id: user.id };

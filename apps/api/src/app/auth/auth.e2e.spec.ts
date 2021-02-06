@@ -14,20 +14,24 @@ describe('Auth', () => {
 	let usersService: UsersService;
 
 	beforeAll(async () => {
-		const moduleRef = await Test.createTestingModule({
+		const module = await Test.createTestingModule({
 			imports: [AuthModule],
 		}).compile();
 
-		app = testApp(moduleRef);
-		usersService = moduleRef.get<UsersService>(UsersService);
+		app = testApp(module);
+		usersService = module.get<UsersService>(UsersService);
 		await app.init();
 	});
 
-	afterEach(() => {
-		jest.resetAllMocks();
+	afterAll(async () => {
+		await app.close();
 	});
 
-	it('should return 200 when providing correct credentials', async () => {
+	afterEach(() => {
+		jest.restoreAllMocks();
+	});
+
+	it('should return 200 when signing in with correct credentials', async () => {
 		// Given
 		const user: User = {
 			username: 'User',

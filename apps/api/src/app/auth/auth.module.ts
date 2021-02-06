@@ -20,7 +20,14 @@ import { UsersModule } from '../users/users.module';
 		}),
 	],
 	controllers: [AuthController],
-	providers: [AuthService, LocalStrategy, JwtStrategy, JwtAuthGuard, LocalAuthGuard],
-	exports: [AuthService],
+	providers: [
+		AuthService,
+		LocalStrategy,
+		JwtStrategy,
+		JwtAuthGuard,
+		LocalAuthGuard,
+		AuthController,
+	],
+	exports: [AuthService, AuthController],
 })
 export class AuthModule {}

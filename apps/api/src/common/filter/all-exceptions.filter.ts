@@ -9,10 +9,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
 		let body: SerializedError[] = [
 			{
-				message:
-					typeof exception.getResponse() === 'object'
-						? (<any>exception.getResponse()).message
-						: exception.message,
+				message: exception.message,
 			},
 		];
 

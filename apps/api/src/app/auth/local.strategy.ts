@@ -1,6 +1,6 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserDto } from '../users/dtos/user.dto';
 import { localType } from '../../common/guards/local-auth.guard';
@@ -12,10 +12,6 @@ export class LocalStrategy extends PassportStrategy(Strategy, localType) {
 	}
 
 	validate(username: string, password: string): UserDto {
-		const user = this.authService.signIn(username, password);
-		if (!user) {
-			throw new UnauthorizedException();
-		}
-		return user;
+		return this.authService.signIn(username, password);
 	}
 }
